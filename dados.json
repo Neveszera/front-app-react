@@ -1,16 +1,16 @@
 {
   "produtos": [
     {
-      "id":1,
-      "nome":"Resident Evil 4",
-      "preco": 150,
-      "desc":"Jogo de Tiro para 1 pessoa"
-  },
-  {
-      "id":2,
-      "nome":"SONIC",
+      "id": 1,
+      "nome": "Resident",
+      "preco": "15000",
+      "desc": "Jogo"
+    },
+    {
+      "id": 2,
+      "nome": "SONIC",
       "preco": 350,
-      "desc":"Jogo de Ação"
-  }
+      "desc": "Jogo de Aventura"
+    }
   ]
 }

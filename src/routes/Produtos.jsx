@@ -1,35 +1,43 @@
 import { useState, useEffect } from 'react'
 import ModalActions from '../components/ModalActions'
 
-export default function Produtos(){
+export default function Produtos() {
 
     const [produtosApi, setProdutosApi] = useState([])
+    const [open, setOpen] = useState(false);
+    const [prodID, setProdID] = useState(0);
 
     useEffect(
-        ()=>{
-            fetch('http://localhost:5000/produtos')
-            .then((resp)=> resp.json())
-            .then((resp)=> setProdutosApi(resp))
-            .catch((error)=> console.log(error))
-        },[]
+        () => {
+            if (!open) {
+                fetch('http://localhost:5000/produtos')
+                    .then((resp) => resp.json())
+                    .then((resp) => setProdutosApi(resp))
+                    .catch((error) => console.log(error))
+            }
+        }, [open]
     )
 
-    const handleDelete = (id)=>{
-        fetch(`http://localhost:5000/produtos/${id}`,{method: 'delete'})
-        .then(()=> (window.location = '/produtos'))
-        .catch((error)=> console.log(error))
+    const handleDelete = (id) => {
+        fetch(`http://localhost:5000/produtos/${id}`, { method: 'delete' })
+            .then(() => (window.location = '/produtos'))
+            .catch((error) => console.log(error))
     }
-    
-    const [open, setOpen] = useState(false);
 
-    return(
+
+    const handleEdit = (id) => {
+        setProdID(id);
+        setOpen(true);
+    }
+
+    return (
         <section>
             <button>Cadastrar Jogo</button>
             <h1>Lista de Jogos</h1>
 
-            {open ? <ModalActions open={open} setOpen={setOpen}/> : ""}
+            {open ? <ModalActions open={open} id={prodID} setOpen={setOpen} /> : ""}
 
-            <button onClick={()=> setOpen(true)}>OPEN-MODAL</button>
+
 
             <table>
                 <thead>
@@ -41,17 +49,17 @@ export default function Produtos(){
                     </tr>
                 </thead>
                 <tbody>
-                {produtosApi.map((prod)=> (
-                    <tr key={prod.id}>
-                        <td>{prod.nome}</td>
-                        <td>{prod.desc}</td>
-                        <td>{prod.preco}</td>
-                        <td>
-                            <button onClick={handleDelete.bind(this, prod.id)}  >Deletar</button>
-                        </td>
-                    </tr>
-                ))
-                }
+                    {produtosApi.map((prod) => (
+                        <tr key={prod.id}>
+                            <td>{prod.nome}</td>
+                            <td>{prod.desc}</td>
+                            <td>{prod.preco}</td>
+                            <td>
+                                <button onClick={handleDelete.bind(this, prod.id)}  >Deletar</button> |   <button onClick={() => handleEdit(prod.id)}>Editar</button>
+                            </td>
+                        </tr>
+                    ))
+                    }
                 </tbody>
                 <tfoot>
                     <tr>
